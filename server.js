@@ -46,10 +46,11 @@ class Room{
  ai(b,dt){
   b.t-=dt;
   if(b.t<=0){b.t=.35+Math.random()*.4;let best=null,bd=1e9;for(const e of this.ents)if(e!==b&&e.alive){const d=Math.hypot(e.x-b.x,e.y-b.y)*(pts(e)>2&&e.ds<300?.7:1);if(d<bd){bd=d;best=e}}b.tg=best;b.td=best?Math.hypot(best.x-b.x,best.y-b.y):1e9;
-   let bc=null,cd=1e9;for(const c of this.chests)if(!c.taken){const d=Math.hypot(c.x-b.x,c.y-b.y);if(d<cd){cd=d;bc=c}}b.cs=bc;b.cd=cd;b.sd=Math.random()<.5?1:-1}
+   let bc=null,cd=1e9;for(const c of this.chests)if(!c.taken){const d=Math.hypot(c.x-b.x,c.y-b.y);if(d<cd){cd=d;bc=c}}b.cs=bc;b.cd=cd;if(b.sw===undefined||--b.sw<=0){b.sd=Math.random()<.5?1:-1;b.sw=4+Math.floor(Math.random()*5)}}
   const t=b.tg;let mx=0,my=0;
   if(b.cs&&(!t||b.td>430||b.cd<260)){const d=Math.hypot(b.cs.x-b.x,b.cs.y-b.y)||1;mx=(b.cs.x-b.x)/d;my=(b.cs.y-b.y)/d}
-  else if(t){const dx=t.x-b.x,dy=t.y-b.y,d=Math.hypot(dx,dy)||1,ux=dx/d,uy=dy/d;let k=d>340?1:d<210?-1:0;if(b.hp<250&&b.ds<=0)k=-1;mx=ux*k-uy*b.sd*.7;my=uy*k+ux*b.sd*.7}
+  else if(t){const dx=t.x-b.x,dy=t.y-b.y,d=Math.hypot(dx,dy)||1,ux=dx/d,uy=dy/d;let k=d>340?1:d<210?-1:0;if(b.hp<250&&b.ds<=0)k=-1;mx=ux*k-uy*b.sd;my=uy*k+ux*b.sd}
+  if(b.x<160)mx+=1;else if(b.x>W-160)mx-=1;if(b.y<160)my+=1;else if(b.y>H-160)my-=1;
   let l=Math.hypot(mx,my);if(l<.2){if(b.wa===undefined||Math.random()<.02)b.wa=Math.random()*6.28;mx=Math.cos(b.wa);my=Math.sin(b.wa);l=1}
   mx/=l;my/=l;const px=b.x,py=b.y;this.move(b,mx,my,SPEED,dt);if(Math.hypot(b.x-px,b.y-py)<SPEED*dt*.3){b.sd=-b.sd;b.wa=Math.random()*6.28}
   b.cool-=dt;
