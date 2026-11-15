@@ -41,7 +41,7 @@ class Room{
     for(let i=0;i<t.ch;i++)this.chests.push({x:cl(t.x+rn(-100,100),60,W-60),y:cl(t.y+rn(-100,100),60,H-60),taken:false});
     t.cap=[];t.ch=0;this.m('💥 ה-DS של '+t.name+' נשבר! '+(n?n+' שבויים שוחררו, ':'')+'הוא איבד את כל הנקודות','b')}}return}
   t.hp-=dmg;
-  if(t.hp<=0){t.hp=0;t.alive=false;by.cap.push(t);by.ds+=200;this.bombs=this.bombs.filter(b=>b.o!==t);this.m('⛓️ '+by.name+' תפס את '+t.name,'k');
+  if(t.hp<=0){t.hp=0;t.alive=false;t.by=by;by.cap.push(t);by.ds+=200;this.bombs=this.bombs.filter(b=>b.o!==t);this.m('⛓️ '+by.name+' תפס את '+t.name,'k');
    if(this.ents.filter(e=>e.alive).length<=1&&this.ph==='play')this.finish(true)}}
  ai(b,dt){
   b.t-=dt;
@@ -79,7 +79,7 @@ class Room{
   const L=[...this.ents].sort((a,b)=>pts(b)-pts(a)||b.hp-a.hp);this.win=(full&&this.ents.find(e=>e.alive))||L[0]}
  snap(){
   const base={t:'s',ph:this.ph,pt:r1(this.pt),tm:r1(this.time),
-   e:this.ents.map(e=>[r1(e.x),r1(e.y),Math.round(e.aim*100)/100,Math.round(e.hp),Math.round(e.ds),e.alive?1:0,e.cap.length,e.ch]),
+   e:this.ents.map(e=>[r1(e.x),r1(e.y),Math.round(e.aim*100)/100,Math.round(e.hp),Math.round(e.ds),e.alive?1:0,e.cap.length,e.ch,e.by&&!e.alive?e.by.id:-1]),
    b:this.bul.map(b=>[Math.round(b.x),Math.round(b.y),Math.round(b.vx),Math.round(b.vy),b.o.id]),
    ch:this.chests.filter(c=>!c.taken).map(c=>[Math.round(c.x),Math.round(c.y)]),
    bm:this.bombs.map(b=>[Math.round(b.x),Math.round(b.y),r1(b.timer)]),ev:this.ev};
