@@ -101,9 +101,10 @@ const K={};let M={x:0,y:0,d:false};
 const sc=()=>G.zoom*Math.min(cw,ch)/800;
 function aimAt(x,y){M.x=x;M.y=y;if(G&&G.bomb){G.bomb.x=G.cam.x+(x-cw/2)/sc();G.bomb.y=G.cam.y+(y-ch/2)/sc()}}
 function drop(){if(!G||!G.bomb)return false;ws.send(JSON.stringify({t:'bomb',x:G.bomb.x,y:G.bomb.y}));G.bomb=null;tone(300,.3,.3,'sawtooth');return true}
-addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;K[e.key.toLowerCase()]=1;
+const kn=e=>/^Key[A-Z]$/.test(e.code)?e.code.slice(3).toLowerCase():e.key.toLowerCase();
+addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;K[kn(e)]=1;
  if(e.code==='Space'&&G){e.preventDefault();if(G.phase==='play'&&G.P.alive&&G.bcd<=0&&!G.bomb){G.bomb={phase:'aim',x:G.cam.x,y:G.cam.y};msg('🎯 בחר מיקום לפצצה (לחץ על המפה)');tone(600,.1,.2,'square')}}});
-addEventListener('keyup',e=>K[e.key.toLowerCase()]=0);
+addEventListener('keyup',e=>K[kn(e)]=0);
 addEventListener('blur',()=>{for(const k in K)K[k]=0;M.d=false});
 cv.addEventListener('mousemove',e=>aimAt(e.clientX,e.clientY));
 cv.addEventListener('mousedown',e=>{aimAt(e.clientX,e.clientY);au();if(drop())return;M.d=true});
