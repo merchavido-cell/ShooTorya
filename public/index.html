@@ -36,7 +36,7 @@ small{opacity:.75;max-width:560px;line-height:1.5}
 <div id="menu"><h1>🎯 ShooTorya</h1><div id="res"></div>
 <div>איך קוראים לך?</div><input id="nm" maxlength="14" placeholder="השם שלך" autocomplete="off" style="font:inherit;font-size:20px;padding:10px 14px;border-radius:10px;border:2px solid #fff5;background:#1b2130;color:#fff;text-align:center;width:220px">
 <div><button id="go">חפש משחק</button> <button id="cn" style="display:none;font:inherit;font-size:16px;padding:10px 16px;border-radius:10px;border:2px solid #fff5;background:#1b2130;color:#fff;cursor:pointer">ביטול</button></div><div id="st" style="min-height:24px;color:#9fd4ff"></div>
-<small>WASD / חצים – כיוון תנועה (הדמות ממשיכה לנוע כל הזמן, S = אחורה) · עכבר – כיוון וירי (לחיצה ארוכה = ירי רצוף).<br>לחץ רווח ואז לחץ על המפה כדי להטיל פצצה קטלנית (400 HP במרכז, יורד עם המרחק). 3 שניות לברוח!<br>הרוג מישהו שאין לו שבויים – הוא שבוי שלך. שבוי או תיבת אוצר = נקודה. מד ה-DS שלך = 200 × נקודות, ושובר אותו = משחרר את כל השבויים ומאבד את כל הנקודות. הכרזות הקול דורשות רמקולים 🔊</small></div>
+<small>WASD / חצים – תנועה (S = אחורה) · עכבר – כיוון וירי (לחיצה ארוכה = ירי רצוף).<br>לחץ רווח ואז לחץ על המפה כדי להטיל פצצה קטלנית (400 HP במרכז, יורד עם המרחק). 3 שניות לברוח!<br>הרוג מישהו שאין לו שבויים – הוא שבוי שלך. שבוי או תיבת אוצר = נקודה. מד ה-DS שלך = 200 × נקודות, ושובר אותו = משחרר את כל השבויים ומאבד את כל הנקודות. הכרזות הקול דורשות רמקולים 🔊</small></div>
 <script>
 const $=id=>document.getElementById(id),cv=$('c'),cx=cv.getContext('2d');
 let cw,ch;function rs(){const d=devicePixelRatio||1;cw=innerWidth;ch=innerHeight;cv.width=cw*d;cv.height=ch*d;cx.setTransform(d,0,0,d,0,0)}addEventListener('resize',rs);rs();
@@ -113,10 +113,7 @@ addEventListener('mouseup',()=>M.d=false);
 cv.addEventListener('touchstart',e=>{const t=e.touches[0];aimAt(t.clientX,t.clientY);if(drop())return;M.d=true},{passive:true});
 cv.addEventListener('touchmove',e=>{const t=e.touches[0];aimAt(t.clientX,t.clientY)},{passive:true});
 cv.addEventListener('touchend',()=>M.d=false);
-function inp(){let dx=(K.d||K.arrowright?1:0)-(K.a||K.arrowleft?1:0),dy=(K.s||K.arrowdown?1:0)-(K.w||K.arrowup?1:0);
- if(dx||dy){const l=Math.hypot(dx,dy);dx/=l;dy/=l;G.ld={x:dx,y:dy}}
- else if(G.phase==='play'){if(!G.ld){const P=G.P,l=Math.hypot(W/2-P.x,H/2-P.y)||1;G.ld={x:(W/2-P.x)/l,y:(H/2-P.y)/l}}dx=G.ld.x;dy=G.ld.y}
- return{dx,dy,aim:Math.atan2(M.y-ch/2,M.x-cw/2),fire:!!M.d&&!G.bomb}}
+function inp(){let dx=(K.d||K.arrowright?1:0)-(K.a||K.arrowleft?1:0),dy=(K.s||K.arrowdown?1:0)-(K.w||K.arrowup?1:0);const l=Math.hypot(dx,dy)||1;return{dx:dx/l,dy:dy/l,aim:Math.atan2(M.y-ch/2,M.x-cw/2),fire:!!M.d&&!G.bomb}}
 // ---------- per-frame ----------
 function update(dt){
  G.fx=G.fx.filter(f=>(f.t+=dt)<(f.k==='m'?.08:f.k==='x'?1.1:1.2));
