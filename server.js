@@ -19,9 +19,9 @@ class Room{
   this.state='run';if(waiting===this)waiting=null;
   const n=SIZE,used=new Set(),pos=[...Array(n).keys()].sort(()=>Math.random()-.5);
   const names=this.pl.map(p=>{let nm=p.name,k=2;while(used.has(nm))nm=p.name+' '+k++;used.add(nm);return nm});
-  const pool=NAMES.filter(x=>!used.has(x)).sort(()=>Math.random()-.5);
+  let botN=0;
   for(let i=0;i<n;i++){const h=this.pl[i],a=pos[i]*Math.PI*2/n;
-   const e={id:i,name:h?names[i]:pool.pop(),col:COLS[i],x:W/2+Math.cos(a)*900,y:H/2+Math.sin(a)*900,hp:1000,ds:0,cap:[],ch:0,alive:true,cool:0,aim:a+Math.PI,bot:!h,ws:h?h.ws:null,in:{dx:0,dy:0,aim:a+Math.PI,fire:false},bcd:0,t:0,sd:1};
+   const e={id:i,name:h?names[i]:'בוט'+(++botN),col:COLS[i],x:W/2+Math.cos(a)*900,y:H/2+Math.sin(a)*900,hp:1000,ds:0,cap:[],ch:0,alive:true,cool:0,aim:a+Math.PI,bot:!h,ws:h?h.ws:null,in:{dx:0,dy:0,aim:a+Math.PI,fire:false},bcd:0,t:0,sd:1};
    if(h)h.ws.ent=e;this.ents.push(e)}
   this.obs=[];this.chests=[];this.decor=[];
   while(this.obs.length<48){const o={x:rn(80,W-80),y:rn(80,H-80),r:rn(28,76)};if(this.ents.some(e=>Math.hypot(e.x-o.x,e.y-o.y)<o.r+90))continue;this.obs.push(o)}
